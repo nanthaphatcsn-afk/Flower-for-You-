@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A rack of seed packets. Open one for a flower, a few sweet words, and a reminder not to give up.">
+<meta name="theme-color" content="#EFF1E9">
+<meta property="og:title" content="Don't Give Up Seed Co.">
+<meta property="og:description" content="Pick a packet and open it — there is a flower and a few kind words inside.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B8%3C/text%3E%3C/svg%3E">
+<title>Don't Give Up Seed Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#EFF1E9;
+    --card:#F9FAF5;
+    --ink:#1B2A21;
+    --ink-2:#5C6B5B;
+    --ink-3:#8A9686;
+    --line:#D3DACA;
+    --bloom:#C9527A;
+    --leaf:#4F7A54;
+    --honey:#B87A1B;
+    --shadow:0 1px 2px rgba(27,42,33,.06), 0 10px 24px -14px rgba(27,42,33,.28);
+    --shadow-lift:0 2px 4px rgba(27,42,33,.08), 0 26px 50px -22px rgba(27,42,33,.45);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#131A12;
+      --card:#1D251C;
+      --ink:#E9EFE3;
+      --ink-2:#A2AF9C;
+      --ink-3:#7C8A77;
+      --line:#2F3B2D;
+      --bloom:#F09BB6;
+      --leaf:#88BA8C;
+      --honey:#EBB55F;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 30px -16px rgba(0,0,0,.65);
+      --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 30px 60px -24px rgba(0,0,0,.85);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#131A12;
+    --card:#1D251C;
+    --ink:#E9EFE3;
+    --ink-2:#A2AF9C;
+    --ink-3:#7C8A77;
+    --line:#2F3B2D;
+    --bloom:#F09BB6;
+    --leaf:#88BA8C;
+    --honey:#EBB55F;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 30px -16px rgba(0,0,0,.65);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 30px 60px -24px rgba(0,0,0,.85);
+    color-scheme:dark;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:1rem;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%}
+
+  .mono{
+    font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:.6875rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+  }
+
+  :where(button,a):focus-visible{
+    outline:2px solid var(--bloom);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- ambient drifting petals ---------- */
+  .drift{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .drift span{
+    position:absolute;top:-8vh;display:block;
+    animation:fall linear infinite;
+    opacity:.42;
+  }
+  @keyframes fall{
+    0%{transform:translate3d(0,-10vh,0) rotate(0deg)}
+    100%{transform:translate3d(var(--dx,4vw),112vh,0) rotate(var(--spin,220deg))}
+  }
+
+  /* ---------- shell ---------- */
+  .shell{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(18px,4vw,40px) 72px}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    display:grid;gap:20px;
+    padding-bottom:clamp(28px,4vw,44px);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .eyebrow .rule{flex:1;min-width:24px;height:1px;background:var(--line)}
+  h1{
+    margin:0;
+    font-family:Fraunces,Georgia,"Times New Roman",serif;
+    font-optical-sizing:auto;
+    font-weight:700;
+    font-size:clamp(2.3rem,7.5vw,4rem);
+    line-height:1.02;
+    letter-spacing:-.022em;
+    text-wrap:balance;
+  }
+  h1 em{
+    font-style:italic;font-weight:400;color:var(--bloom);
+  }
+  .lede{max-width:44ch;margin:0;color:var(--ink-2);font-size:1.0625rem}
+  .lede .th{display:block;color:var(--ink);font-weight:500}
+  .masthead-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px}
+
+  .btn{
+    font:500 .875rem/1 "IBM Plex Sans Thai",system-ui,sans-serif;
+    display:inline-flex;align-items:center;gap:.55em;
+    padding:.82em 1.2em;
+    border-radius:999px;
+    border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);
+    cursor:pointer;
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .btn:active{transform:translateY(0)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--ink-3)}
+  .btn .dot{width:.5em;height:.5em;border-radius:50%;background:var(--bloom)}
+
+  /* ---------- rack ---------- */
+  .rack-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:clamp(30px,5vw,48px) 0 18px}
+  .rack-head h2{
+    margin:0;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.375rem;letter-spacing:-.01em;
+  }
+  .rack{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(178px,1fr));
+    gap:clamp(14px,2vw,22px);
+    list-style:none;margin:0;padding:0;
+  }
+
+  .packet{
+    --v-petal:var(--bloom);
+    display:grid;
+    grid-template-rows:auto auto 1fr auto;
+    gap:10px;
+    width:100%;
+    padding:26px 14px 12px;
+    text-align:left;
+    font:inherit;color:inherit;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px 3px 8px 8px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    position:relative;
+    transition:transform .18s cubic-bezier(.2,.7,.3,1), box-shadow .18s ease, border-color .18s ease;
+  }
+  .packet::before{
+    content:"";position:absolute;left:10px;right:10px;top:15px;
+    border-top:1.5px dashed var(--line);
+  }
+  .packet .tear{
+    position:absolute;top:3px;left:0;right:0;text-align:center;
+    font-family:"IBM Plex Mono",monospace;font-size:.5rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-3);
+  }
+  .packet:hover{transform:translateY(-4px) rotate(-.5deg);box-shadow:var(--shadow-lift);border-color:var(--v-petal)}
+  .packet:focus-visible{outline:2px solid var(--v-petal);outline-offset:3px}
+
+  .vname{
+    display:block;
+    font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.0625rem;line-height:1.15;
+    letter-spacing:-.012em;text-wrap:balance;
+  }
+  .vthai{display:block;font-size:.8125rem;color:var(--ink-2);line-height:1.5}
+
+  .window svg{display:block}
+  .packet-head{display:block}
+  .notes dt{margin:0}
+  .window{
+    display:grid;place-items:center;
+    padding:12px 0;
+    border-radius:50% 50% 46% 46% / 44%;
+    background:var(--card);
+    background:color-mix(in oklab, var(--v-petal) 17%, var(--card));
+    border:1px solid var(--line);
+    border-color:color-mix(in oklab, var(--v-petal) 28%, var(--line));
+  }
+  .packet-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding-top:9px;border-top:1px solid var(--line);
+  }
+  .packet-foot .lot{color:var(--ink-2);font-weight:500}
+  .packet-foot .sow{text-align:right;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ---------- modal ---------- */
+  .scrim{
+    position:fixed;inset:0;z-index:50;
+    display:grid;place-items:center;
+    padding:16px;
+    background:rgba(19,26,18,.52);
+    backdrop-filter:blur(3px);
+    animation:fadein .2s ease;
+  }
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+
+  .sheet{
+    --v-petal:var(--bloom);
+    position:relative;
+    width:min(560px,100%);
+    max-height:calc(100dvh - 32px);
+    overflow-y:auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px 4px 12px 12px;
+    box-shadow:var(--shadow-lift);
+    padding:34px clamp(20px,4vw,38px) clamp(20px,4vw,30px);
+    animation:rise .28s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+  .sheet::before{
+    content:"";position:absolute;left:14px;right:14px;top:17px;border-top:1.5px dashed var(--line);
+  }
+  .sheet .tear{
+    position:absolute;top:4px;left:0;right:0;text-align:center;
+    font-family:"IBM Plex Mono",monospace;font-size:.5rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-3);
+  }
+  .close{
+    position:absolute;top:30px;right:14px;
+    width:32px;height:32px;display:grid;place-items:center;
+    border:1px solid var(--line);border-radius:50%;
+    background:transparent;color:var(--ink-2);cursor:pointer;font-size:1rem;line-height:1;
+    transition:background .15s ease,color .15s ease;
+  }
+  .close:hover{background:var(--paper);color:var(--ink)}
+
+  .sheet-bloom{
+    display:grid;place-items:center;
+    margin:12px 0 4px;
+    padding:14px;
+    border-radius:50%;
+    background:color-mix(in oklab, var(--v-petal) 15%, var(--card));
+    width:min(210px,52vw);aspect-ratio:1;
+    justify-self:center;
+    margin-inline:auto;
+  }
+  .sheet h3{
+    margin:14px 0 0;text-align:center;
+    font-family:Fraunces,Georgia,serif;font-weight:600;
+    font-size:clamp(1.4rem,4.4vw,1.8rem);line-height:1.12;letter-spacing:-.018em;text-wrap:balance;
+  }
+  .sheet .vthai-lg{margin:2px 0 0;text-align:center;color:var(--ink-2);font-size:.9375rem}
+
+  .words{
+    margin:22px 0 0;padding:18px 20px;
+    border-left:2px solid var(--v-petal);
+    background:color-mix(in oklab, var(--v-petal) 7%, var(--card));
+    border-radius:0 8px 8px 0;
+  }
+  .words .th{
+    margin:0;font-size:1.125rem;line-height:1.72;font-weight:500;text-wrap:pretty;
+  }
+  .words .en{
+    margin:10px 0 0;
+    font-family:Fraunces,Georgia,serif;font-style:italic;font-size:1rem;line-height:1.5;
+    color:var(--ink-2);text-wrap:pretty;
+  }
+
+  .notes{margin:20px 0 0;display:grid;gap:0;border-top:1px solid var(--line)}
+  .notes div{
+    display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:baseline;
+    padding:9px 0;border-bottom:1px solid var(--line);
+  }
+  .notes dd{margin:0;font-size:.9375rem;color:var(--ink)}
+
+  .stamp{
+    display:flex;justify-content:center;margin:24px 0 4px;
+  }
+  .stamp span{
+    display:inline-flex;flex-direction:column;align-items:center;gap:2px;
+    padding:9px 18px;
+    border:2px solid var(--bloom);border-radius:6px;
+    color:var(--bloom);
+    transform:rotate(-2.6deg);
+    box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--bloom) 32%, transparent);
+  }
+  .stamp b{font-size:1.0625rem;font-weight:600;line-height:1.3}
+  .stamp i{
+    font-family:"IBM Plex Mono",monospace;font-style:normal;
+    font-size:.5625rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+  .actions .btn{flex:1 1 auto;justify-content:center}
+  .copied{
+    margin:10px 0 0;font-family:"IBM Plex Mono",monospace;font-size:.6875rem;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--leaf);
+  }
+  .link-fallback{
+    width:100%;margin-top:10px;padding:8px 10px;
+    font-family:"IBM Plex Mono",monospace;font-size:.75rem;
+    color:var(--ink);background:var(--paper);
+    border:1px solid var(--line);border-radius:6px;
+  }
+
+  footer{
+    margin-top:clamp(44px,7vw,72px);padding-top:22px;
+    border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;justify-content:space-between;
+  }
+  footer p{margin:0;color:var(--ink-2);font-size:.9375rem;max-width:46ch}
+
+  /* petal unfurl inside the sheet */
+  .sheet .petal{
+    transform-origin:0 0;
+    animation:unfurl .55s cubic-bezier(.2,.9,.3,1) backwards;
+    animation-delay:calc(var(--i) * 32ms);
+  }
+  @keyframes unfurl{from{transform:scale(.1);opacity:0}to{transform:scale(1);opacity:1}}
+
+  @media (prefers-reduced-motion:reduce){
+    .drift{display:none}
+    .sheet,.scrim,.sheet .petal{animation:none}
+    .packet{transition:none}
+    .packet:hover{transform:none}
+    .btn:hover{transform:none}
+  }
+  @media (max-width:480px){
+    .packet{padding:24px 12px 10px}
+    .actions .btn{flex-basis:100%}
+  }
+</style>
+</head>
+<body>
+<div class="drift" id="drift" aria-hidden="true"></div>
+
+<div class="shell">
+  <header class="masthead">
+    <p class="eyebrow mono">
+      <span>Est. 2026</span><span class="rule"></span><span>Small batch</span><span class="rule"></span><span>12 varieties</span>
+    </p>
+    <h1>Don't Give&nbsp;Up <em>Seed Co.</em></h1>
+    <div class="masthead-row">
+      <p class="lede">
+        <span class="th">เลือกสักซองแล้วเปิดดูนะ ข้างในมีดอกไม้กับคำพูดดี ๆ รออยู่</span>
+        Pick a packet and open it. There's a flower inside, and a few words for the days that feel long.
+      </p>
+      <button class="btn" id="random" type="button"><span class="dot"></span>Open a packet for me</button>
+    </div>
+  </header>
+
+  <div class="rack-head">
+    <h2>Twelve varieties in stock</h2>
+    <p class="mono" style="margin:0">Every packet has its own link — send one to someone</p>
+  </div>
+
+  <ul class="rack" id="rack"></ul>
+
+  <footer>
+    <p>Made for someone who needs it today. Open a packet, copy its link, and post it to them — it opens straight to their flower.</p>
+    <p class="mono" style="max-width:none">Seeds metaphorical · encouragement real</p>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var VARIETIES = [
+    {slug:"sunrise-marigold", name:"Sunrise Marigold", thai:"ดาวเรืองอรุณ",
+     th:"วันนี้อาจจะหนักไปหน่อย แต่พรุ่งนี้ก็ยังมีดอกใหม่รอเธออยู่เสมอนะ",
+     en:"Today can be heavy. Tomorrow still has a new bloom waiting for you.",
+     sow:"On mornings that start heavy", water:"One small thing, before noon", blooms:"By tomorrow's light",
+     petals:12, rings:2, width:.50, petal:"#E8A33D", petal2:"#F2C173", center:"#A85F1E", pollen:"#F6D89B"},
+
+    {slug:"quiet-cosmos", name:"Quiet Cosmos", thai:"คอสมอสเงียบ ๆ",
+     th:"ไม่ต้องเก่งตลอดเวลาก็ได้ แค่เธอยังอยู่ตรงนี้ก็เยี่ยมมากแล้ว",
+     en:"You don't have to be strong all the time. Still being here is already plenty.",
+     sow:"When you've run out of words", water:"Silence, and no apologies", blooms:"Whenever you're ready",
+     petals:8, rings:1, width:.62, petal:"#E48FB4", petal2:"#F3B9CF", center:"#E7C03F", pollen:"#FFF0BC"},
+
+    {slug:"slow-bloom-peony", name:"Slow-Bloom Peony", thai:"โบตั๋นค่อย ๆ บาน",
+     th:"ดอกไม้บางดอกใช้เวลานานกว่าจะบาน ไม่ได้แปลว่ามันสวยน้อยกว่าใครเลย",
+     en:"Some flowers take longer to open. It never makes them any less beautiful.",
+     sow:"When everyone seems ahead", water:"Your own pace, undiluted", blooms:"Late, and worth it",
+     petals:10, rings:3, width:.68, petal:"#D9648A", petal2:"#EE9CB6", center:"#B84268", pollen:"#F8CFDC"},
+
+    {slug:"rainy-day-hydrangea", name:"Rainy Day Hydrangea", thai:"ไฮเดรนเยียวันฝน",
+     th:"ฝนไม่ได้มาทำร้ายเธอ มันมารดน้ำสิ่งที่กำลังจะโตต่างหาก",
+     en:"The rain isn't here to hurt you. It's watering what's about to grow.",
+     sow:"On the third grey day", water:"It's already raining", blooms:"The week after the storm",
+     petals:4, rings:3, width:.74, petal:"#7C97D6", petal2:"#A9BCE9", center:"#EDE8C8", pollen:"#C9D3EE"},
+
+    {slug:"little-courage-daisy", name:"Little Courage Daisy", thai:"เดซี่ใจกล้า",
+     th:"กล้าหาญไม่ได้แปลว่าไม่กลัวนะ มันแปลว่ากลัวอยู่แล้วยังเดินต่อ",
+     en:"Brave doesn't mean unafraid. It means afraid, and walking on anyway.",
+     sow:"Before the thing you're dreading", water:"One step, then the next", blooms:"The moment you begin",
+     petals:16, rings:1, width:.34, petal:"#F7F4E6", petal2:"#E8E4D1", center:"#E8A33D", pollen:"#C07F1C"},
+
+    {slug:"late-night-jasmine", name:"Late-Night Jasmine", thai:"มะลิดึก",
+     th:"พักได้นะ ไม่ต้องรู้สึกผิด ดอกไม้เองก็หลับตอนกลางคืนเหมือนกัน",
+     en:"You're allowed to rest, with no guilt. Flowers sleep at night too.",
+     sow:"After midnight", water:"Eight hours, no guilt", blooms:"Overnight",
+     petals:6, rings:2, width:.52, petal:"#FBF7EE", petal2:"#EEE7D6", center:"#DCCB8E", pollen:"#AD9A52"},
+
+    {slug:"second-chance-sunflower", name:"Second-Chance Sunflower", thai:"ทานตะวันครั้งที่สอง",
+     th:"ล้มได้ เริ่มใหม่ได้ ทานตะวันเองก็หันหาแสงใหม่ทุกเช้าเหมือนกัน",
+     en:"You can fall and begin again. Sunflowers turn toward new light every morning.",
+     sow:"The day after it went wrong", water:"Turn toward the light again", blooms:"Every single morning",
+     petals:18, rings:2, width:.38, petal:"#F2B32E", petal2:"#DE9314", center:"#6B4A20", pollen:"#4E3514"},
+
+    {slug:"stubborn-lotus", name:"Stubborn Lotus", thai:"บัวใจแข็ง",
+     th:"โคลนไม่เคยหยุดบัวจากการบานได้สักครั้งเดียว",
+     en:"Mud has never once stopped a lotus from blooming.",
+     sow:"In the worst of the mud", water:"Nothing — it knows the way", blooms:"Right at the surface",
+     petals:8, rings:3, width:.46, petal:"#F2C0D0", petal2:"#E695B2", center:"#E9D06A", pollen:"#A98A24"},
+
+    {slug:"tiny-wins-forget-me-not", name:"Tiny-Wins Forget-Me-Not", thai:"อย่าลืมฉันดวงจิ๋ว",
+     th:"วันนี้เธอตื่นมาได้ ก็นับเป็นชัยชนะแล้วนะ นับให้ตัวเองด้วย",
+     en:"You woke up today. That already counts as a win — let it count.",
+     sow:"When nothing feels like enough", water:"Count the small ones out loud", blooms:"Today, already",
+     petals:5, rings:1, width:.78, petal:"#6E9BD8", petal2:"#9CBCE8", center:"#F2D45C", pollen:"#C9971E"},
+
+    {slug:"homesick-bougainvillea", name:"Homesick Bougainvillea", thai:"เฟื่องฟ้าคิดถึงบ้าน",
+     th:"มีคนคิดถึงเธออยู่นะ มากกว่าที่เธอเดาไว้เยอะเลย",
+     en:"Someone is thinking about you — a good deal more than you'd guess.",
+     sow:"When you feel far from everyone", water:"One message you keep postponing", blooms:"As soon as you send it",
+     petals:3, rings:2, width:.80, petal:"#D4487E", petal2:"#EA7BA8", center:"#F5EEDC", pollen:"#BFAF86"},
+
+    {slug:"grow-anyway-dandelion", name:"Grow-Anyway Dandelion", thai:"แดนดิไลออนดื้อ ๆ",
+     th:"แดนดิไลออนโตในรอยแตกของถนนได้ เธอก็โตในวันที่ไม่สมบูรณ์แบบได้เหมือนกัน",
+     en:"Dandelions grow in cracks in the road. You can grow in imperfect days.",
+     sow:"In cracks, in bad soil, anywhere", water:"Rain that wasn't meant for you", blooms:"Regardless",
+     petals:24, rings:2, width:.22, petal:"#F0C224", petal2:"#DEA50D", center:"#B87F09", pollen:"#F9E294"},
+
+    {slug:"someday-cherry-blossom", name:"Someday Cherry Blossom", thai:"ซากุระสักวัน",
+     th:"สิ่งที่เธอรดน้ำอยู่ทุกวันนี้ สักวันมันจะบานให้เธอเห็นเองแหละ",
+     en:"What you're watering now will bloom where you can see it, one day.",
+     sow:"When the payoff feels far away", water:"Keep going, quietly", blooms:"In a spring you can't see yet",
+     petals:5, rings:1, width:.70, petal:"#F7CFDC", petal2:"#EFB6CA", center:"#E0A0B6", pollen:"#BC6E88"}
+  ];
+
+  var rack   = document.getElementById("rack");
+  var scrim  = document.getElementById("scrim");
+  var sheet  = document.getElementById("sheet");
+  var drift  = document.getElementById("drift");
+  var lastFocus = null;
+  var current = -1;
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+    });
+  }
+
+  /* relative luminance, so pale petals fall back to the flower's centre for tinting */
+  function lum(hex){
+    var n = parseInt(hex.slice(1), 16);
+    var c = [(n>>16&255)/255, (n>>8&255)/255, (n&255)/255].map(function(v){
+      return v <= .03928 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4);
+    });
+    return .2126*c[0] + .7152*c[1] + .0722*c[2];
+  }
+  function tintOf(v){ return lum(v.petal) > .74 ? v.center : v.petal; }
+
+  /* ---- parametric bloom: petals rotated around a centre, drawn ring by ring ---- */
+  function petalPath(L, W){
+    return "M0 0 C " + W + " " + (-L*.22) + ", " + (W*.92) + " " + (-L*.78) +
+           ", 0 " + (-L) + " C " + (-W*.92) + " " + (-L*.78) + ", " + (-W) + " " + (-L*.22) + ", 0 0 Z";
+  }
+  function bloomSVG(v, size){
+    var r = size/2, L = r*.88, W = L*v.width, rings = v.rings || 1;
+    var out = '<svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'" aria-hidden="true" focusable="false"><g transform="translate('+r+' '+r+')">';
+    var idx = 0;
+    for (var ring = rings - 1; ring >= 0; ring--){
+      var scale = 1 - ring * (rings > 2 ? .24 : .3);
+      var offset = (ring % 2) ? 180 / v.petals : 0;
+      var fill = (ring === 0) ? v.petal : v.petal2;
+      for (var i = 0; i < v.petals; i++){
+        var a = i * (360 / v.petals) + offset;
+        out += '<g transform="rotate(' + a.toFixed(2) + ')">' +
+               '<path class="petal" style="--i:' + (idx++) + '" fill="' + fill + '" d="' +
+               petalPath(L*scale, W*scale) + '"/></g>';
+      }
+    }
+    out += '<circle r="' + (L*.21).toFixed(1) + '" fill="' + v.center + '"/>';
+    for (var p = 0; p < 6; p++){
+      var t = p * Math.PI / 3;
+      out += '<circle cx="' + (Math.cos(t)*L*.11).toFixed(1) + '" cy="' + (Math.sin(t)*L*.11).toFixed(1) +
+             '" r="' + (L*.038).toFixed(1) + '" fill="' + v.pollen + '"/>';
+    }
+    return out + "</g></svg>";
+  }
+
+  /* ---- the rack ---- */
+  VARIETIES.forEach(function(v, i){
+    var li = document.createElement("li");
+    var b  = document.createElement("button");
+    b.type = "button";
+    b.className = "packet";
+    b.style.setProperty("--v-petal", tintOf(v));
+    b.setAttribute("aria-label", "Open packet " + v.name);
+    b.innerHTML =
+      '<span class="tear">tear here</span>' +
+      '<span class="packet-head">' +
+        '<span class="vname">' + esc(v.name) + '</span>' +
+        '<span class="vthai">' + esc(v.thai) + '</span>' +
+      '</span>' +
+      '<span class="window">' + bloomSVG(v, 96) + '</span>' +
+      '<span class="packet-foot">' +
+        '<span class="lot mono">Lot ' + (i < 9 ? "0" : "") + (i+1) + '</span>' +
+        '<span class="sow mono">' + esc(v.sow.replace(/^(On|In|When|Before|After|The)\b/i, function(m){return m;})) + '</span>' +
+      '</span>';
+    b.addEventListener("click", function(){ open(i); });
+    li.appendChild(b);
+    rack.appendChild(li);
+  });
+
+  /* ---- the packet, opened ---- */
+  function linkFor(slug){
+    return location.origin + location.pathname + location.search + "#/" + slug;
+  }
+
+  function open(i, skipHash){
+    var v = VARIETIES[i];
+    if (!v) return;
+    if (scrim.hidden) lastFocus = document.activeElement;
+    current = i;
+    sheet.style.setProperty("--v-petal", tintOf(v));
+    sheet.innerHTML =
+      '<span class="tear">tear along the dotted line</span>' +
+      '<button class="close" type="button" aria-label="Close packet">&#10005;</button>' +
+      '<div class="sheet-bloom">' + bloomSVG(v, 150) + '</div>' +
+      '<h3 id="sheet-title">' + esc(v.name) + '</h3>' +
+      '<p class="vthai-lg">' + esc(v.thai) + ' &middot; Lot ' + (i < 9 ? "0" : "") + (i+1) + '</p>' +
+      '<blockquote class="words">' +
+        '<p class="th">' + esc(v.th) + '</p>' +
+        '<p class="en">' + esc(v.en) + '</p>' +
+      '</blockquote>' +
+      '<dl class="notes">' +
+        '<div><dt class="mono">Sow</dt><dd>' + esc(v.sow) + '</dd></div>' +
+        '<div><dt class="mono">Water</dt><dd>' + esc(v.water) + '</dd></div>' +
+        '<div><dt class="mono">Blooms in</dt><dd>' + esc(v.blooms) + '</dd></div>' +
+      '</dl>' +
+      '<p class="stamp"><span><b>อย่ายอมแพ้นะ</b><i>Don’t give up</i></span></p>' +
+      '<div class="actions">' +
+        '<button class="btn" type="button" data-act="copy">Copy this packet’s link</button>' +
+        '<button class="btn ghost" type="button" data-act="next">Open another</button>' +
+      '</div>' +
+      '<p class="copied" hidden data-role="copied">Link copied &mdash; go send it</p>';
+
+    scrim.hidden = false;
+    document.body.style.overflow = "hidden";
+    sheet.scrollTop = 0;
+    sheet.querySelector(".close").focus();
+    if (!skipHash) history.replaceState(null, "", "#/" + v.slug);
+  }
+
+  function close(){
+    scrim.hidden = true;
+    document.body.style.overflow = "";
+    current = -1;
+    history.replaceState(null, "", location.pathname + location.search);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function randomOther(){
+    if (VARIETIES.length < 2) return 0;
+    var n;
+    do { n = Math.floor(Math.random() * VARIETIES.length); } while (n === current);
+    return n;
+  }
+
+  function copyLink(btn){
+    var url = linkFor(VARIETIES[current].slug);
+    var note = sheet.querySelector('[data-role="copied"]');
+    function done(){
+      note.hidden = false;
+      btn.textContent = "Copied";
+      setTimeout(function(){
+        note.hidden = true;
+        btn.textContent = "Copy this packet’s link";
+      }, 2600);
+    }
+    function manual(){
+      if (sheet.querySelector(".link-fallback")) return;
+      var input = document.createElement("input");
+      input.className = "link-fallback";
+      input.readOnly = true;
+      input.value = url;
+      note.parentNode.insertBefore(input, note);
+      input.select();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done, manual);
+    } else {
+      manual();
+    }
+  }
+
+  sheet.addEventListener("click", function(e){
+    var t = e.target.closest("button");
+    if (!t) return;
+    if (t.classList.contains("close")) return close();
+    if (t.dataset.act === "copy") return copyLink(t);
+    if (t.dataset.act === "next") return open(randomOther());
+  });
+  scrim.addEventListener("mousedown", function(e){ if (e.target === scrim) close(); });
+  document.getElementById("random").addEventListener("click", function(){ open(randomOther()); });
+
+  document.addEventListener("keydown", function(e){
+    if (scrim.hidden) return;
+    if (e.key === "Escape") return close();
+    if (e.key === "ArrowRight") return open((current + 1) % VARIETIES.length);
+    if (e.key === "ArrowLeft")  return open((current - 1 + VARIETIES.length) % VARIETIES.length);
+  });
+
+  /* ---- links that open straight to one packet ---- */
+  function fromHash(skipHash){
+    var slug = location.hash.replace(/^#\/?/, "");
+    if (!slug) return false;
+    for (var i = 0; i < VARIETIES.length; i++){
+      if (VARIETIES[i].slug === slug){ open(i, skipHash); return true; }
+    }
+    return false;
+  }
+  window.addEventListener("hashchange", function(){ if (!fromHash(true)) close(); });
+  fromHash(true);
+
+  /* ---- ambient petals ---- */
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    var pool = ["#E48FB4","#F2C0D0","#E8A33D","#F7CFDC","#7C97D6","#F0C224","#D9648A"];
+    var html = "";
+    for (var d = 0; d < 11; d++){
+      var col = pool[d % pool.length];
+      var s = 9 + Math.round(Math.random() * 11);
+      html += '<span style="left:' + (Math.random()*100).toFixed(1) + '%;' +
+              'animation-duration:' + (20 + Math.random()*22).toFixed(1) + 's;' +
+              'animation-delay:-' + (Math.random()*30).toFixed(1) + 's;' +
+              '--dx:' + (Math.random()*16 - 8).toFixed(1) + 'vw;' +
+              '--spin:' + Math.round(180 + Math.random()*360) + 'deg">' +
+              '<svg width="' + s + '" height="' + Math.round(s*1.45) + '" viewBox="0 0 20 29" aria-hidden="true">' +
+              '<path d="M10 0C4 8 0 15 0 20a10 10 0 0 0 20 0c0-5-4-12-10-20Z" fill="' + col + '"/></svg></span>';
+    }
+    drift.innerHTML = html;
+  }
+})();
+</script>
+</body>
+</html>
